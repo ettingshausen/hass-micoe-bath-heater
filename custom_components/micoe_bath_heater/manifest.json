@@ -1,0 +1,9 @@
+{
+    "domain": "warmbath",
+    "name": "Micoe Bath Heater",
+    "version": "2021.8.1",
+    "documentation": "",
+    "dependencies": [],
+    "codeowners": ["@ettingshausen"],
+    "requirements": ["pyserial"]
+  }
