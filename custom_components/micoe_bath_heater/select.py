@@ -24,7 +24,7 @@ from homeassistant.const import (
 from typing import List
 
 import serial as ser
-se = ser.Serial("/dev/cu.usbserial-1410")
+se = ser.Serial("/dev/cu.usbserial-1430")
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -49,29 +49,12 @@ CONFIG_SENSOR_COOL = 'sensor_cool'
 CONFIG_SENSOR_DRY = 'sensor_dry'
 
 DEFAULT_OPTION = 'Off'
-OPTIONS = ['Off', 'Heat', 'Ventilate', 'Cool', 'Dry', 'Light', 'Night Light', 'Nature Wind']
+OPTIONS = ['Off', 'Heat', 'Ventilate', 'Light', 'Night Light', 'Nature Wind']
 ICON = 'mdi:fan'
 
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_NAME): cv.string,
-    vol.Required(CONFIG_SWITCH_OFF): cv.string,
-    vol.Required(CONFIG_SWITCH_HEAT): cv.string,
-    vol.Required(CONFIG_SWITCH_VENTILATE): cv.string,
-    vol.Required(CONFIG_SWITCH_COOL): cv.string,
-    vol.Required(CONFIG_SWITCH_DRY): cv.string,
-    vol.Required(CONFIG_SENSOR_OFF): cv.string,
-    vol.Required(CONFIG_SENSOR_HEAT): cv.string,
-    vol.Required(CONFIG_SENSOR_VENTILATE): cv.string,
-    vol.Required(CONFIG_SENSOR_COOL): cv.string,
-    vol.Required(CONFIG_SENSOR_DRY): cv.string,
-
-    vol.Required(CONFIG_SWITCH_LIGHT): cv.string,
-    vol.Required(CONFIG_SWITCH_NIGHT_LIGHT): cv.string,
-    vol.Required(CONFIG_SWITCH_NATURE_WIND): cv.string,
-    vol.Required(CONFIG_SENSOR_LIGHT): cv.string,
-    vol.Required(CONFIG_SENSOR_NIGHT_LIGHT): cv.string,
-    vol.Required(CONFIG_SENSOR_NATURE_WIND): cv.string,
 })
 
 
@@ -91,49 +74,46 @@ class WarmbathFan(SelectEntity):
         self._attr_current_option = self._default_state
         self._attr_options = OPTIONS
         self._entity_map = {
-            'Off': config.get(CONFIG_SWITCH_OFF),
-            'Heat': config.get(CONFIG_SWITCH_HEAT),
-            'Ventilate': config.get(CONFIG_SWITCH_VENTILATE),
-            'Cool': config.get(CONFIG_SWITCH_COOL),
-            'Dry': config.get(CONFIG_SWITCH_DRY),
+            'Off': CONFIG_SWITCH_OFF,
+            'Heat': CONFIG_SWITCH_HEAT,
+            'Ventilate': CONFIG_SWITCH_VENTILATE,
+            'Cool': CONFIG_SWITCH_COOL,
+            'Dry': CONFIG_SWITCH_DRY,
 
-            'Light': config.get(CONFIG_SWITCH_LIGHT),
-            'Night Light': config.get(CONFIG_SWITCH_NIGHT_LIGHT),
-            'Nature Wind': config.get(CONFIG_SWITCH_NATURE_WIND),
+            'Light': CONFIG_SWITCH_LIGHT,
+            'Night Light': CONFIG_SWITCH_NIGHT_LIGHT,
+            'Nature Wind': CONFIG_SWITCH_NATURE_WIND,
         }
 
         self._hex_map = {
             'Off': 'FD 03 51 B6 0C 49 DF',
             'Heat': 'FD 03 51 B6 04 48 DF',
             'Ventilate': 'FD 03 51 B6 01 49 DF',
-            'Cool': '',
-            'Dry': '',
-
-            'Light': 'FD 03 51 B6 08 48 DF ',
+            'Light': 'FD 03 51 B6 08 48 DF',
             'Night Light': 'FD 03 51 B6 02 49 DF',
             'Nature Wind': 'FD 03 51 B6 03 49 DF',
         }
         self._state_map = {
-            config.get(CONFIG_SENSOR_OFF): 'Off',
-            config.get(CONFIG_SENSOR_HEAT): 'Heat',
-            config.get(CONFIG_SENSOR_VENTILATE): 'Ventilate',
-            config.get(CONFIG_SENSOR_COOL): 'Cool',
-            config.get(CONFIG_SENSOR_DRY): 'Dry',
+            CONFIG_SENSOR_OFF: 'Off',
+            CONFIG_SENSOR_HEAT: 'Heat',
+            CONFIG_SENSOR_VENTILATE: 'Ventilate',
+            CONFIG_SENSOR_COOL: 'Cool',
+            CONFIG_SENSOR_DRY: 'Dry',
 
-            config.get(CONFIG_SENSOR_LIGHT): 'Light',
-            config.get(CONFIG_SENSOR_NIGHT_LIGHT): 'Night Light',
-            config.get(CONFIG_SENSOR_NATURE_WIND): 'Nature Wind',
+            CONFIG_SENSOR_LIGHT: 'Light',
+            CONFIG_SENSOR_NIGHT_LIGHT: 'Night Light',
+            CONFIG_SENSOR_NATURE_WIND: 'Nature Wind',
         }
         tracking_ids = [
-            config.get(CONFIG_SENSOR_OFF),
-            config.get(CONFIG_SENSOR_HEAT),
-            config.get(CONFIG_SENSOR_VENTILATE),
-            config.get(CONFIG_SENSOR_COOL),
-            config.get(CONFIG_SENSOR_DRY),
+            CONFIG_SENSOR_OFF,
+            CONFIG_SENSOR_HEAT,
+            CONFIG_SENSOR_VENTILATE,
+            CONFIG_SENSOR_COOL,
+            CONFIG_SENSOR_DRY,
 
-            config.get(CONFIG_SENSOR_LIGHT),
-            config.get(CONFIG_SENSOR_NIGHT_LIGHT),
-            config.get(CONFIG_SENSOR_NATURE_WIND)
+            CONFIG_SENSOR_LIGHT,
+            CONFIG_SENSOR_NIGHT_LIGHT,
+            CONFIG_SENSOR_NATURE_WIND
         ]
         async_track_state_change(
             hass=hass,
@@ -170,7 +150,8 @@ class WarmbathFan(SelectEntity):
 
     def select_option(self, option: str) -> None:
         entity_id = self._entity_map.get(option)
-        self.hass.services.call('switch', SERVICE_TURN_ON, {'entity_id': entity_id})
+        _LOGGER.warn(entity_id)
+        # self.hass.services.call('switch', SERVICE_TURN_ON, {'entity_id': entity_id})
         self._attr_current_option = option
 
         toBytes = bytes.fromhex(self._hex_map.get(option))
