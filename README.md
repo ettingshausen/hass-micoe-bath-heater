@@ -21,4 +21,9 @@
 ```yml
 select:
   - platform: warmbath
+    name: 'Micoe Bath Heater'
+
+light:
+  - platform: micoe.light
+    name: 'Micoe Bath Light'
 ```
