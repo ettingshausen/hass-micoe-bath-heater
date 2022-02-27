@@ -27,3 +27,5 @@ light:
   - platform: micoe.light
     name: 'Micoe Bath Light'
 ```
+
+<img src="https://user-images.githubusercontent.com/9806325/155892368-0cd0ff88-f1f3-4e58-b9ad-3b31cbd03072.jpeg" width="500">
