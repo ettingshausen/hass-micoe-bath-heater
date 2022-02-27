@@ -13,7 +13,6 @@ from homeassistant.components.select import (
     DOMAIN,
 )
 
-
 from homeassistant.const import (
     CONF_NAME,
     SERVICE_TURN_OFF,
@@ -25,7 +24,6 @@ from typing import List
 
 import serial as ser
 
-
 _LOGGER = logging.getLogger(__name__)
 
 CONFIG_SWITCH_LIGHT = 'switch_light'
@@ -35,8 +33,6 @@ CONFIG_SWITCH_NATURE_WIND = 'switch_nature_wind'
 CONFIG_SWITCH_OFF = 'switch_off'
 CONFIG_SWITCH_HEAT = 'switch_heat'
 CONFIG_SWITCH_VENTILATE = 'switch_ventilate'
-CONFIG_SWITCH_COOL = 'switch_cool'
-CONFIG_SWITCH_DRY = 'switch_dry'
 
 CONFIG_SENSOR_LIGHT = 'sensor_light'
 CONFIG_SENSOR_NIGHT_LIGHT = 'sensor_night_light'
@@ -45,13 +41,11 @@ CONFIG_SENSOR_NATURE_WIND = 'sensor_nature_wind'
 CONFIG_SENSOR_OFF = 'sensor_off'
 CONFIG_SENSOR_HEAT = 'sensor_heat'
 CONFIG_SENSOR_VENTILATE = 'sensor_ventilate'
-CONFIG_SENSOR_COOL = 'sensor_cool'
-CONFIG_SENSOR_DRY = 'sensor_dry'
+
 
 DEFAULT_OPTION = 'Off'
 OPTIONS = ['Off', 'Heat', 'Ventilate', 'Light', 'Night Light', 'Nature Wind']
 ICON = 'mdi:fan'
-
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_NAME): cv.string,
@@ -77,9 +71,6 @@ class WarmbathFan(SelectEntity):
             'Off': CONFIG_SWITCH_OFF,
             'Heat': CONFIG_SWITCH_HEAT,
             'Ventilate': CONFIG_SWITCH_VENTILATE,
-            'Cool': CONFIG_SWITCH_COOL,
-            'Dry': CONFIG_SWITCH_DRY,
-
             'Light': CONFIG_SWITCH_LIGHT,
             'Night Light': CONFIG_SWITCH_NIGHT_LIGHT,
             'Nature Wind': CONFIG_SWITCH_NATURE_WIND,
@@ -97,8 +88,6 @@ class WarmbathFan(SelectEntity):
             CONFIG_SENSOR_OFF: 'Off',
             CONFIG_SENSOR_HEAT: 'Heat',
             CONFIG_SENSOR_VENTILATE: 'Ventilate',
-            CONFIG_SENSOR_COOL: 'Cool',
-            CONFIG_SENSOR_DRY: 'Dry',
 
             CONFIG_SENSOR_LIGHT: 'Light',
             CONFIG_SENSOR_NIGHT_LIGHT: 'Night Light',
@@ -108,8 +97,6 @@ class WarmbathFan(SelectEntity):
             CONFIG_SENSOR_OFF,
             CONFIG_SENSOR_HEAT,
             CONFIG_SENSOR_VENTILATE,
-            CONFIG_SENSOR_COOL,
-            CONFIG_SENSOR_DRY,
 
             CONFIG_SENSOR_LIGHT,
             CONFIG_SENSOR_NIGHT_LIGHT,
