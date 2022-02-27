@@ -24,7 +24,7 @@ from homeassistant.const import (
 from typing import List
 
 import serial as ser
-se = ser.Serial("/dev/cu.usbserial-1430")
+
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -86,12 +86,12 @@ class WarmbathFan(SelectEntity):
         }
 
         self._hex_map = {
-            'Off': 'FD 03 51 B6 0C 49 DF',
-            'Heat': 'FD 03 51 B6 04 48 DF',
-            'Ventilate': 'FD 03 51 B6 01 49 DF',
-            'Light': 'FD 03 51 B6 08 48 DF',
-            'Night Light': 'FD 03 51 B6 02 49 DF',
-            'Nature Wind': 'FD 03 51 B6 03 49 DF',
+            'Off': 'FD 03 51 B6 0C 30 DF',
+            'Heat': 'FD 03 51 B6 04 30 DF',
+            'Ventilate': 'FD 03 51 B6 01 30 DF',
+            'Light': 'FD 03 51 B6 08 30 DF',
+            'Night Light': 'FD 03 51 B6 02 30 DF',
+            'Nature Wind': 'FD 03 51 B6 03 30 DF',
         }
         self._state_map = {
             CONFIG_SENSOR_OFF: 'Off',
@@ -154,9 +154,11 @@ class WarmbathFan(SelectEntity):
         # self.hass.services.call('switch', SERVICE_TURN_ON, {'entity_id': entity_id})
         self._attr_current_option = option
 
-        toBytes = bytes.fromhex(self._hex_map.get(option))
-        res = se.write(toBytes)
+        to_bytes = bytes.fromhex(self._hex_map.get(option))
+        se = ser.Serial("/dev/cu.usbserial-1430", 9600)
+        res = se.write(to_bytes)
         _LOGGER.warn(res)
+        se.close()
 
         self.count_down()
 
