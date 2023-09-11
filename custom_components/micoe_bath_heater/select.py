@@ -52,8 +52,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 })
 
 
-@asyncio.coroutine
-def async_setup_platform(hass, config, add_devices_callback, discovery_info=None):
+async def async_setup_platform(hass, config, add_devices_callback, discovery_info=None):
     name = config.get(CONF_NAME)
     add_devices_callback([WarmbathFan(hass, config, name)])
 

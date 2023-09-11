@@ -4,7 +4,7 @@ import logging
 from typing import Any
 
 from homeassistant.components.light import (
-    ToggleEntity, LightEntity, Light
+    ToggleEntity, LightEntity
 
 )
 from homeassistant.const import (
@@ -16,8 +16,7 @@ _LOGGER = logging.getLogger(__name__)
 LIGHT_PLATFORMS = ["light"]
 
 
-@asyncio.coroutine
-def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
+async def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
     """Perform the setup for Beverly water purifier."""
 
     light_entities = []
@@ -30,7 +29,7 @@ def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
     async_add_devices(light_entities)
 
 
-class MicoeLight(Light):
+class MicoeLight(LightEntity):
     """Representation of a HomeSeer light-type device."""
 
     def __init__(self, hass, name):
